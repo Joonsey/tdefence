@@ -10,7 +10,12 @@
 
 static global state;
 
-int main(int argc, char *argv[]) {
+#ifdef _WIN32
+#include <windows.h>
+    int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
+#else
+    int main(int argc, char *argv[]) {
+#endif
 	if (init_global_state(&state) != 0) {
 		printf("Error initializing\n");
 	}

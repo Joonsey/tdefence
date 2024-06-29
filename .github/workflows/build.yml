@@ -1,0 +1,49 @@
+name: Build archive
+
+on:  # Trigger workflow on pushes to the master branch
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  build-linux:
+    runs-on: ubuntu-latest  # Or any other compatible Linux runner
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Install deps
+      run: |
+        sudo apt-get install libsdl2-image-dev libsdl2-dev clang
+    - name: Compile
+      run: |
+        ./build.sh
+    - name: Create archive
+      run: |
+        cp -r assets build/assets
+    - name: Upload artifacts  # Upload compiled program for future reference
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-linux
+        path: build
+
+  build-windows:
+    runs-on: ubuntu-latest  # Or any other compatible Linux runner
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Run script
+      run: ./build-windows.sh
+
+    - name: Create archive
+      run: |
+        mkdir build
+        cp -r assets build/assets
+        mv main.exe build/main.exe
+    - name: Upload artifacts  # Upload compiled program for future reference
+      uses: actions/upload-artifact@v3
+      with:
+        name: build-windows
+        path: build
