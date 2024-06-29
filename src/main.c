@@ -6,6 +6,7 @@
 #include "tower.h"
 #include "types.h"
 #include "state.h"
+#include "level.h"
 
 static global state;
 
@@ -39,6 +40,9 @@ static global state;
 
 	pop_element(&tower_array, 3);
 
+	level test_level;
+	init_level(&test_level, LEVEL_FIRST);
+
 
 	while (state.is_running) {
 		while (SDL_PollEvent(&e) != 0) {
@@ -62,6 +66,8 @@ static global state;
 			}
 		}
 		prepare_render(&state);
+
+		render_level(&state, &test_level);
 
 		for (int i = 0; i < tower_array.size; i++) {
 			tower* tower = get_element(&tower_array, i);
