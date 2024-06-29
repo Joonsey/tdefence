@@ -1,14 +1,12 @@
 #include "render.h"
-#include "types.h"
 #include "tower.h"
-#include "sprites.h"
 
-tower* init_tower(global *state, tower* tower)
+tower* init_tower(global *state, tower* tower, SDL_Texture* base_texture)
 {
 	tower->range = 10;
 	tower->target = NULL;
 	tower->angle = 0;
-	tower->base_texture = load_sprite(state, "assets/sprites/cannon-turret.png");
+	tower->base_texture = base_texture;
 
 	return tower;
 };

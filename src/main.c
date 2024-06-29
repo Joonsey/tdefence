@@ -2,12 +2,10 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 
+#include "sprites.h"
 #include "tower.h"
 #include "types.h"
-#include "render.h"
 #include "state.h"
-#include "defines.h"
-#include "sprites.h"
 
 static global state;
 
@@ -21,6 +19,8 @@ static global state;
 		printf("Error initializing\n");
 	}
 
+	SDL_Texture* tex = load_sprite(&state, "assets/sprites/cannon-turret.png");
+
 	state.is_running = 1;
 	SDL_Event e;
 
@@ -30,7 +30,7 @@ static global state;
 	for (int i = 0; i < 20; i ++)
 	{
 		tower tower;
-		init_tower(&state, &tower);
+		init_tower(&state, &tower, tex);
 		tower.x = 16* i;
 		tower.y = 200;
 		tower.angle = i * 10;
@@ -45,9 +45,20 @@ static global state;
 			if (e.type == SDL_QUIT) {
 				state.is_running = 0;
 			}
-			else if((e.type == SDL_KEYUP) & (e.key.keysym.sym == SDLK_q))
-			{
-				state.is_running = 0;
+			else if(e.type == SDL_KEYUP) {
+				if (e.key.keysym.sym == SDLK_q){
+					state.is_running = 0;
+				}
+				if (e.key.keysym.sym == SDLK_a){
+					tower tower;
+					init_tower(&state, &tower, tex);
+					tower.x = 16 * (tower_array.size % 20);
+					tower.y = 100;
+					add_element(&tower_array, &tower);
+				}
+				if (e.key.keysym.sym == SDLK_d){
+					tower* tower = pop_element(&tower_array, tower_array.size - 1);
+				}
 			}
 		}
 		prepare_render(&state);

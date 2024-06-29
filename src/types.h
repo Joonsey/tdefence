@@ -13,4 +13,4 @@ void resize_darray(darray *arr, size_t new_capacity);
 void add_element(darray *arr, void* element);
 void free_darray(darray *arr);
 void* get_element(darray *arr, int index);
-void pop_element(darray *arr, int index);
+void* pop_element(darray *arr, int index);

@@ -42,7 +42,7 @@ void free_darray(darray *arr) {
 
 void* get_element(darray *arr, int index)
 {
-	if (index >= arr->size)
+	if (index >= arr->size | index < 0)
 	{
 		printf("ERROR: index out of bounds\n");
 		return arr->array + arr->size * arr->element_size;
@@ -50,13 +50,20 @@ void* get_element(darray *arr, int index)
 	return arr->array + index * arr->element_size;
 }
 
-void pop_element(darray *arr, int index)
+void* pop_element(darray *arr, int index)
 {
-	if (index > arr->size)
+	if (index >= arr->size | index < 0)
 	{
 		printf("ERROR: index out of bounds\n");
-		return;
+		return NULL;
 	}
-	mem_copy(arr->array + index * arr->element_size, arr->array + (index + 1)* arr->element_size, arr->element_size * arr->size - index);
+	void* element = mem_alloc(arr->element_size);
+	void* src_ptr = arr->array + index * arr->element_size;
+	void* dest_ptr = src_ptr + arr->element_size;
+
+	mem_copy(element, src_ptr, arr->element_size);
+	mem_copy(src_ptr, dest_ptr, arr->element_size * (arr->size - index));
 	arr->size--;
+
+	return element;
 }
