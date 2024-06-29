@@ -36,11 +36,21 @@ jobs:
 
     - name: Run script
       run: ./build-windows.sh
+    - name: Download SDL2 DLLs
+      run: |
+        mkdir -p sdl2
+        wget https://www.libsdl.org/release/SDL2-devel-2.30.3-VC.zip -O sdl2/SDL2.zip
+        unzip sdl2/SDL2.zip -d sdl2
+        mv sdl2/SDL2-2.30.3/lib/x64/SDL2.dll sdl2
 
+        wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.8.2-VC.zip -O sdl2/SDL2_image.zip
+        unzip sdl2/SDL2_image.zip -d sdl2
+        cp -r sdl2/SDL2_image-2.8.2/lib/x64/* sdl2
     - name: Create archive
       run: |
         mkdir build
         cp -r assets build/assets
+        cp sdl2/*.dll build/
         mv main.exe build/main.exe
     - name: Upload artifacts  # Upload compiled program for future reference
       uses: actions/upload-artifact@v3
