@@ -17,8 +17,8 @@ void render_sprite_stack(SDL_Texture* texture, SDL_Renderer* renderer, int x, in
     SDL_Rect src_height = {0};
     src_height.w = texture_width;
     src_height.h = sprite_height;
-    for (int i = 0; i < sprite_count; ++i) {
+    for (int i = sprite_count; i > 0; --i) {
         src_height.y = i * sprite_height;
-        render_texture(texture, renderer, &src_height, x, y - i, angle);
+        render_texture(texture, renderer, &src_height, x, y + i, angle);
     }
 }
