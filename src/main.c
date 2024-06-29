@@ -25,6 +25,7 @@ static global state;
 	double angle = 0;
 
 	SDL_Texture* texture = load_sprite(&state, "assets/sprites/tank.png");
+	SDL_Texture* cannon_texture = load_sprite(&state, "assets/sprites/cannon-turret.png");
 
 	while (state.is_running) {
 		while (SDL_PollEvent(&e) != 0) {
@@ -37,8 +38,8 @@ static global state;
 			}
 		}
 		prepare_render(&state);
-
 		render_sprite_stack(texture, state.renderer, RENDER_WIDTH / 2, RENDER_HEIGHT / 2, angle, 16);
+		render_sprite_stack(cannon_texture, state.renderer, RENDER_WIDTH / 2 + 16, RENDER_HEIGHT / 2, angle, 16);
 
 		angle++;
 
