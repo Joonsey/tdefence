@@ -1,16 +1,19 @@
 #include "types.h"
 #include "mem.h"
+#include <string.h>
 
 // Function to initialize a dynamic array
-void init_darray(darray *arr, size_t initial_capacity) {
-    arr->array = (int *)mem_alloc(initial_capacity * sizeof(int));
+void init_darray(darray *arr, size_t initial_capacity, size_t size) {
+    arr->array = (void *)mem_alloc(initial_capacity * size);
+	memset(arr->array, 0, initial_capacity * size);
     arr->size = 0;
     arr->capacity = initial_capacity;
+	arr->element_size = size;
 }
 
 // Function to resize the dynamic array
 void resize_darray(darray *arr, size_t new_capacity) {
-    int *new_array = (int *)mem_realloc(arr->array, new_capacity * sizeof(int));
+    void *new_array = (void *)mem_realloc(arr->array, new_capacity * arr->element_size );
     if (new_array) {
         arr->array = new_array;
         arr->capacity = new_capacity;
@@ -20,13 +23,12 @@ void resize_darray(darray *arr, size_t new_capacity) {
 }
 
 // Function to add an element to the dynamic array
-void add_element(darray *arr, int element) {
+void add_element(darray *arr, void* element) {
     if (arr->size == arr->capacity) {
-        // Double the capacity if the array is full
         resize_darray(arr, arr->capacity * 2);
     }
-    arr->array[arr->size] = element;
-    arr->size++;
+	mem_copy(arr->array + arr->size * arr->element_size, element, arr->element_size);
+	arr->size++;
 }
 
 // Function to free the dynamic array
@@ -35,4 +37,26 @@ void free_darray(darray *arr) {
     arr->array = NULL;
     arr->size = 0;
     arr->capacity = 0;
+    arr->element_size = 0;
+}
+
+void* get_element(darray *arr, int index)
+{
+	if (index >= arr->size)
+	{
+		printf("ERROR: index out of bounds\n");
+		return arr->array + arr->size * arr->element_size;
+	}
+	return arr->array + index * arr->element_size;
+}
+
+void pop_element(darray *arr, int index)
+{
+	if (index > arr->size)
+	{
+		printf("ERROR: index out of bounds\n");
+		return;
+	}
+	mem_copy(arr->array + index * arr->element_size, arr->array + (index + 1)* arr->element_size, arr->element_size * arr->size - index);
+	arr->size--;
 }

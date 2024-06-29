@@ -2,6 +2,7 @@
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
 
+#include "tower.h"
 #include "types.h"
 #include "render.h"
 #include "state.h"
@@ -22,10 +23,22 @@ static global state;
 
 	state.is_running = 1;
 	SDL_Event e;
-	double angle = 0;
 
-	SDL_Texture* texture = load_sprite(&state, "assets/sprites/tank.png");
-	SDL_Texture* cannon_texture = load_sprite(&state, "assets/sprites/cannon-turret.png");
+	darray tower_array;
+	init_darray(&tower_array, 4, sizeof(tower));
+
+	for (int i = 0; i < 20; i ++)
+	{
+		tower tower;
+		init_tower(&state, &tower);
+		tower.x = 16* i;
+		tower.y = 200;
+		tower.angle = i * 10;
+		add_element(&tower_array, &tower);
+	}
+
+	pop_element(&tower_array, 3);
+
 
 	while (state.is_running) {
 		while (SDL_PollEvent(&e) != 0) {
@@ -38,10 +51,12 @@ static global state;
 			}
 		}
 		prepare_render(&state);
-		render_sprite_stack(texture, state.renderer, RENDER_WIDTH / 2, RENDER_HEIGHT / 2, angle, 16);
-		render_sprite_stack(cannon_texture, state.renderer, RENDER_WIDTH / 2 + 16, RENDER_HEIGHT / 2, angle, 16);
 
-		angle++;
+		for (int i = 0; i < tower_array.size; i++) {
+			tower* tower = get_element(&tower_array, i);
+			render_tower(&state, tower);
+			tower->angle++;
+		}
 
 		render_render_texture(&state);
 		SDL_RenderPresent(state.renderer);
