@@ -157,7 +157,7 @@ Darray determine_route(Level* level) {
 
 Level* init_level(Level* level, level_type type) {
 	// ignore type for now
-	mem_set(level, sizeof(*level), 0);
+	mem_set(level, 0, sizeof(*level));
 	level->type = type;
 
 	level->tiles = read_file("assets/map/level1.csv");

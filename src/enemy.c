@@ -4,10 +4,9 @@
 #include "mem.h"
 
 Enemy* init_enemy(Enemy* enemy, SDL_Texture* base_texture){
-	mem_set(enemy, sizeof(Enemy), 0);
+	mem_set(enemy, 0, sizeof(Enemy));
 	enemy->base_texture = base_texture;
 	enemy->speed = 16.0f;
-	enemy->target_index = 0;
 
 	return enemy;
 }

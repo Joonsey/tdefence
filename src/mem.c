@@ -17,6 +17,7 @@ void* mem_realloc(void* ptr, int size) {
 	return realloc(ptr, size);
 }
 
-void mem_set(void *dest, int size, long data) {
-	memset(dest, size, data);
+/* Set SIZE bytes of DATA to DEST.  */
+void mem_set(void *dest, long data, int size) {
+	memset(dest, data, size);
 }
