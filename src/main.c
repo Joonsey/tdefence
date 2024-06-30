@@ -1,6 +1,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include <math.h>
 
 #include "sprites.h"
 #include "tower.h"
@@ -50,14 +51,12 @@ static Global state;
 	init_darray(&enemy_array, 10, sizeof(Enemy));
 	Point start_pos = *(Point*)get_element(&test_level.route, 0);
 
-	for (int i = 0; i < 10; i ++)
-	{
-		Enemy enemy;
-		init_enemy(&enemy, enemy_texture);
-		enemy.route = test_level.route;
-		place_enemy(&enemy, start_pos);
-		add_element(&enemy_array, &enemy);
-	}
+	Enemy enemy;
+	init_enemy(&enemy, enemy_texture);
+	enemy.route = test_level.route;
+	place_enemy(&enemy, start_pos);
+	add_element(&enemy_array, &enemy);
+	float enemy_spawn_cd = 0;
 
 	while (state.is_running) {
 		while (SDL_PollEvent(&e) != 0) {
@@ -109,6 +108,18 @@ static Global state;
 			update_enemy(enemy, state.delta_time);
 			render_enemy(&state, enemy);
 		}
+
+		if ((state.last_tick_time / 1000) % 3 == 0 &
+				enemy_spawn_cd <= 0) {
+			Enemy enemy;
+			init_enemy(&enemy, enemy_texture);
+			enemy.route = test_level.route;
+			place_enemy(&enemy, start_pos);
+			add_element(&enemy_array, &enemy);
+			enemy_spawn_cd = 1;
+		}
+
+		enemy_spawn_cd -= state.delta_time;
 
 		render_render_texture(&state);
 		SDL_RenderPresent(state.renderer);
