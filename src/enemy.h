@@ -6,6 +6,7 @@
 typedef struct enemy_t {
 	Point position;
 	float speed;
+	float angle;
 	int target_index;
 	Darray route;
 	SDL_Texture* base_texture;

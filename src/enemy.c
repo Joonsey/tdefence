@@ -7,6 +7,7 @@ Enemy* init_enemy(Enemy* enemy, SDL_Texture* base_texture){
 	mem_set(enemy, sizeof(Enemy), 0);
 	enemy->base_texture = base_texture;
 	enemy->speed = 16.0f;
+	enemy->target_index = 0;
 
 	return enemy;
 }
@@ -15,7 +16,7 @@ void render_enemy(Global *state, Enemy* enemy) {
 			enemy->base_texture,
 			state->renderer,
 			enemy->position,
-			0,
+			enemy->angle,
 			TILE_SIZE);
 }
 
@@ -33,6 +34,7 @@ int update_enemy(Enemy* enemy, float dt) {
 	Point delta = sub_point(target, enemy->position);
 	float distance = sqrt(delta.x * delta.x + delta.y * delta.y);
 
+	enemy->angle++;
 
 	float velocity = enemy->speed * dt;
 	if (distance < velocity) {
