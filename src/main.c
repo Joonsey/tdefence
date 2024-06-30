@@ -24,6 +24,7 @@ static Global state;
 
 	state.is_running = 1;
 	SDL_Event e;
+	int draw_path = 0;
 
 	Darray tower_array;
 	init_darray(&tower_array, 4, sizeof(Tower));
@@ -63,11 +64,21 @@ static Global state;
 				if (e.key.keysym.sym == SDLK_d){
 					Tower* tower = pop_element(&tower_array, tower_array.size - 1);
 				}
+				if (e.key.keysym.sym == SDLK_e){
+					if (draw_path == 0) draw_path = 1;
+					else draw_path = 0;
+				}
 			}
 		}
 		prepare_render(&state);
 
-		render_level(&state, &test_level);
+		if (draw_path == 0){
+			render_level(&state, &test_level);
+		}
+		else{
+			render_route(&state, &test_level);
+		}
+
 
 		for (int i = 0; i < tower_array.size; i++) {
 			Tower* tower = get_element(&tower_array, i);

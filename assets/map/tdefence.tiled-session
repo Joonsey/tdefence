@@ -7,6 +7,14 @@
     "expandedProjectPaths": [
     ],
     "fileStates": {
+        "level1.tmx": {
+            "scale": 0.75,
+            "selectedLayer": 0,
+            "viewCenter": {
+                "x": 571.9999999999999,
+                "y": 249.33333333333331
+            }
+        },
         "swamp_.tsx": {
             "scaleInDock": 1,
             "scaleInEditor": 1
@@ -14,12 +22,12 @@
     },
     "last.exportedFilePath": "/home/johannes/projects/tdefence/assets/map",
     "last.imagePath": "/home/johannes/projects/puzzle-jam/assets/fantasy_ [version 2.0]/forest_",
-    "map.height": 45,
+    "map.height": 23,
     "map.lastUsedExportFilter": "CSV files (*.csv)",
     "map.lastUsedFormat": "tmx",
     "map.tileHeight": 16,
     "map.tileWidth": 16,
-    "map.width": 68,
+    "map.width": 34,
     "openFiles": [
     ],
     "project": "tdefence.tiled-project",

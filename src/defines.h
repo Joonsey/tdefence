@@ -5,3 +5,5 @@
 #define RENDER_WIDTH 540
 #define RENDER_HEIGHT 360
 
+#define TILE_SIZE 16
+

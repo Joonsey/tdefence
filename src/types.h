@@ -16,5 +16,6 @@ void init_darray(Darray *arr, size_t initial_capacity, size_t size);
 void resize_darray(Darray *arr, size_t new_capacity);
 void add_element(Darray *arr, void* element);
 void free_darray(Darray *arr);
-void* get_element(Darray *arr, int index);
+void* get_element(const Darray *arr, int index);
 void* pop_element(Darray *arr, int index);
+int cmp_point(Point a, Point b);

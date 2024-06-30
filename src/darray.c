@@ -40,7 +40,7 @@ void free_darray(Darray *arr) {
     arr->element_size = 0;
 }
 
-void* get_element(Darray *arr, int index)
+void* get_element(const Darray *arr, int index)
 {
 	if (index >= arr->size | index < 0)
 	{
