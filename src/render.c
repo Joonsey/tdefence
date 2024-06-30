@@ -2,8 +2,8 @@
 
 void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, SDL_Rect* src_rect, Point point, double angle) {
     SDL_Rect dst_rect;
-    dst_rect.x = point.x - src_rect->w / 2;
-    dst_rect.y = point.y - src_rect->h / 2;
+    dst_rect.x = point.x;
+    dst_rect.y = point.y;
     dst_rect.w = src_rect->w;
     dst_rect.h = src_rect->h;
     SDL_RenderCopyEx(renderer, texture, src_rect, &dst_rect, angle, NULL, SDL_FLIP_NONE);
