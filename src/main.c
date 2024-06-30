@@ -8,7 +8,7 @@
 #include "state.h"
 #include "level.h"
 
-static global state;
+static Global state;
 
 #ifdef _WIN32
 #include <windows.h>
@@ -25,22 +25,22 @@ static global state;
 	state.is_running = 1;
 	SDL_Event e;
 
-	darray tower_array;
-	init_darray(&tower_array, 4, sizeof(tower));
+	Darray tower_array;
+	init_darray(&tower_array, 4, sizeof(Tower));
 
 	for (int i = 0; i < 20; i ++)
 	{
-		tower tower;
+		Tower tower;
 		init_tower(&state, &tower, tex);
-		tower.x = 16* i;
-		tower.y = 200;
+		Point point = {.x = 16 * i, .y = 200};
 		tower.angle = i * 10;
+		tower.point = point;
 		add_element(&tower_array, &tower);
 	}
 
 	pop_element(&tower_array, 3);
 
-	level test_level;
+	Level test_level;
 	init_level(&test_level, LEVEL_FIRST);
 
 
@@ -54,14 +54,14 @@ static global state;
 					state.is_running = 0;
 				}
 				if (e.key.keysym.sym == SDLK_a){
-					tower tower;
+					Tower tower;
 					init_tower(&state, &tower, tex);
-					tower.x = 16 * (tower_array.size % 20);
-					tower.y = 100;
+					tower.point.x  = 16 * (tower_array.size % 20);
+					tower.point.y = 100;
 					add_element(&tower_array, &tower);
 				}
 				if (e.key.keysym.sym == SDLK_d){
-					tower* tower = pop_element(&tower_array, tower_array.size - 1);
+					Tower* tower = pop_element(&tower_array, tower_array.size - 1);
 				}
 			}
 		}
@@ -70,7 +70,7 @@ static global state;
 		render_level(&state, &test_level);
 
 		for (int i = 0; i < tower_array.size; i++) {
-			tower* tower = get_element(&tower_array, i);
+			Tower* tower = get_element(&tower_array, i);
 			render_tower(&state, tower);
 			tower->angle++;
 		}

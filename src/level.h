@@ -1,4 +1,5 @@
 #include "state.h"
+#include "types.h"
 
 typedef enum level_type {
 	LEVEL_FIRST
@@ -6,10 +7,10 @@ typedef enum level_type {
 
 
 typedef struct level_t {
-	int tiles[68][45];
 	level_type type;
-} level;
+	Darray tiles;
+} Level;
 
-level* init_level(level* level, level_type);
-void render_level(global* state, level* level);
-
+Level* init_level(Level* level, level_type);
+void render_level(Global* state, Level* level);
+void debug_level(Level* level);

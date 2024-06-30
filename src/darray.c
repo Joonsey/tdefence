@@ -3,7 +3,7 @@
 #include <string.h>
 
 // Function to initialize a dynamic array
-void init_darray(darray *arr, size_t initial_capacity, size_t size) {
+void init_darray(Darray *arr, size_t initial_capacity, size_t size) {
     arr->array = (void *)mem_alloc(initial_capacity * size);
 	memset(arr->array, 0, initial_capacity * size);
     arr->size = 0;
@@ -12,7 +12,7 @@ void init_darray(darray *arr, size_t initial_capacity, size_t size) {
 }
 
 // Function to resize the dynamic array
-void resize_darray(darray *arr, size_t new_capacity) {
+void resize_darray(Darray *arr, size_t new_capacity) {
     void *new_array = (void *)mem_realloc(arr->array, new_capacity * arr->element_size );
     if (new_array) {
         arr->array = new_array;
@@ -23,7 +23,7 @@ void resize_darray(darray *arr, size_t new_capacity) {
 }
 
 // Function to add an element to the dynamic array
-void add_element(darray *arr, void* element) {
+void add_element(Darray *arr, void* element) {
     if (arr->size == arr->capacity) {
         resize_darray(arr, arr->capacity * 2);
     }
@@ -32,7 +32,7 @@ void add_element(darray *arr, void* element) {
 }
 
 // Function to free the dynamic array
-void free_darray(darray *arr) {
+void free_darray(Darray *arr) {
     mem_free(arr->array);
     arr->array = NULL;
     arr->size = 0;
@@ -40,7 +40,7 @@ void free_darray(darray *arr) {
     arr->element_size = 0;
 }
 
-void* get_element(darray *arr, int index)
+void* get_element(Darray *arr, int index)
 {
 	if (index >= arr->size | index < 0)
 	{
@@ -50,7 +50,7 @@ void* get_element(darray *arr, int index)
 	return arr->array + index * arr->element_size;
 }
 
-void* pop_element(darray *arr, int index)
+void* pop_element(Darray *arr, int index)
 {
 	if (index >= arr->size | index < 0)
 	{

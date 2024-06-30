@@ -1,6 +1,6 @@
 #include "sprites.h"
 
-SDL_Texture* load_sprite(global *state, char* path){
+SDL_Texture* load_sprite(Global *state, char* path){
 
 	SDL_Surface* surface = IMG_Load(path);
 	if (surface == NULL) {

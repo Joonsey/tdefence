@@ -2,7 +2,7 @@
 #include "defines.h"
 
 
-int init_global_state(struct global* global)
+int init_global_state(Global* global)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) {
 		printf("SDL_Init Error: %s\n", SDL_GetError());
@@ -35,7 +35,7 @@ int init_global_state(struct global* global)
 	return 0;
 };
 
-void render_render_texture(struct global* state)
+void render_render_texture(Global* state)
 {
 	SDL_SetRenderTarget(state->renderer, NULL);
 	SDL_RenderClear(state->renderer);
@@ -46,13 +46,13 @@ void render_render_texture(struct global* state)
 	}
 }
 
-void cleanup_state(struct global* state)
+void cleanup_state(Global* state)
 {
 	SDL_DestroyRenderer(state->renderer);
 	SDL_DestroyWindow(state->window);
 }
 
-void prepare_render(global* state)
+void prepare_render(Global* state)
 {
 	if (SDL_SetRenderTarget(state->renderer, state->render_target) != 0) {
 		printf("SDL_SetRenderTarget Error: %s\n", SDL_GetError());
