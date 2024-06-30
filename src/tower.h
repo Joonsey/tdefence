@@ -12,5 +12,5 @@ typedef struct tower_t {
 } Tower;
 
 
-Tower* init_tower(Global *state, Tower* tower, SDL_Texture* base_texture);
+Tower* init_tower(Tower* tower, SDL_Texture* base_texture);
 void render_tower(Global *state, Tower* tower);

@@ -19,3 +19,7 @@ void free_darray(Darray *arr);
 void* get_element(const Darray *arr, int index);
 void* pop_element(Darray *arr, int index);
 int cmp_point(Point a, Point b);
+Point sub_point(Point a, Point b);
+Point add_point(Point a, Point b);
+Point mul_point(Point a, Point b);
+Point div_point(Point a, Point b);

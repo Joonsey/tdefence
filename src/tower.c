@@ -1,7 +1,8 @@
-#include "render.h"
 #include "tower.h"
+#include "defines.h"
+#include "render.h"
 
-Tower* init_tower(Global *state, Tower* tower, SDL_Texture* base_texture)
+Tower* init_tower(Tower* tower, SDL_Texture* base_texture)
 {
 	tower->range = 10;
 	tower->target = NULL;
@@ -18,6 +19,6 @@ void render_tower(Global *state, Tower* tower)
 			state->renderer,
 			tower->point,
 			tower->angle,
-			16);
+			TILE_SIZE);
 }
 

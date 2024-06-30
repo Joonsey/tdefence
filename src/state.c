@@ -32,6 +32,9 @@ int init_global_state(Global* global)
 		return 1;
 	}
 
+	global->last_tick_time = 0;
+	global->delta_time = 0;
+
 	return 0;
 };
 

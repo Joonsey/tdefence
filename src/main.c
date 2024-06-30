@@ -7,6 +7,7 @@
 #include "types.h"
 #include "state.h"
 #include "level.h"
+#include "enemy.h"
 
 static Global state;
 
@@ -20,7 +21,8 @@ static Global state;
 		printf("Error initializing\n");
 	}
 
-	SDL_Texture* tex = load_sprite(&state, "assets/sprites/cannon-turret.png");
+	SDL_Texture* cannon_texture = load_sprite(&state, "assets/sprites/cannon-turret.png");
+	SDL_Texture* enemy_texture = load_sprite(&state, "assets/sprites/basic_enemy.png");
 
 	state.is_running = 1;
 	SDL_Event e;
@@ -32,7 +34,7 @@ static Global state;
 	for (int i = 0; i < 20; i ++)
 	{
 		Tower tower;
-		init_tower(&state, &tower, tex);
+		init_tower(&tower, cannon_texture);
 		Point point = {.x = 16 * i, .y = 200};
 		tower.angle = i * 10;
 		tower.point = point;
@@ -44,6 +46,18 @@ static Global state;
 	Level test_level;
 	init_level(&test_level, LEVEL_FIRST);
 
+	Darray enemy_array;
+	init_darray(&enemy_array, 10, sizeof(Enemy));
+	Point start_pos = *(Point*)get_element(&test_level.route, 0);
+
+	for (int i = 0; i < 10; i ++)
+	{
+		Enemy enemy;
+		init_enemy(&enemy, enemy_texture);
+		enemy.route = test_level.route;
+		place_enemy(&enemy, start_pos);
+		add_element(&enemy_array, &enemy);
+	}
 
 	while (state.is_running) {
 		while (SDL_PollEvent(&e) != 0) {
@@ -56,7 +70,7 @@ static Global state;
 				}
 				if (e.key.keysym.sym == SDLK_a){
 					Tower tower;
-					init_tower(&state, &tower, tex);
+					init_tower(&tower, cannon_texture);
 					tower.point.x  = 16 * (tower_array.size % 20);
 					tower.point.y = 100;
 					add_element(&tower_array, &tower);
@@ -70,6 +84,11 @@ static Global state;
 				}
 			}
 		}
+		uint32_t tick_time = SDL_GetTicks();
+		state.delta_time = (tick_time - state.last_tick_time);
+		state.delta_time /= 100;
+		state.last_tick_time = tick_time;
+
 		prepare_render(&state);
 
 		if (draw_path == 0){
@@ -79,11 +98,16 @@ static Global state;
 			render_route(&state, &test_level);
 		}
 
-
 		for (int i = 0; i < tower_array.size; i++) {
 			Tower* tower = get_element(&tower_array, i);
 			render_tower(&state, tower);
 			tower->angle++;
+		}
+
+		for (int i = 0; i < enemy_array.size; i++) {
+			Enemy *enemy = get_element(&enemy_array, i);
+			update_enemy(enemy, state.delta_time);
+			render_enemy(&state, enemy);
 		}
 
 		render_render_texture(&state);

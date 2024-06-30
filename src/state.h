@@ -8,6 +8,8 @@ typedef struct Global {
 	SDL_Renderer* renderer;
 	SDL_Texture* render_target;
 	int is_running;
+	float delta_time;
+	uint32_t last_tick_time;
 } Global;
 
 int init_global_state(Global* global);
