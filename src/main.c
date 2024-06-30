@@ -9,6 +9,7 @@
 #include "state.h"
 #include "level.h"
 #include "enemy.h"
+#include "wave.h"
 
 static Global state;
 
@@ -47,16 +48,8 @@ static Global state;
 	Level test_level;
 	init_level(&test_level, LEVEL_FIRST);
 
-	Darray enemy_array;
-	init_darray(&enemy_array, 10, sizeof(Enemy));
-	Point start_pos = *(Point*)get_element(&test_level.route, 0);
-
-	Enemy enemy;
-	init_enemy(&enemy, enemy_texture);
-	enemy.route = test_level.route;
-	place_enemy(&enemy, start_pos);
-	add_element(&enemy_array, &enemy);
-	float enemy_spawn_cd = 0;
+	Wave wave;
+	init_wave(&wave, &test_level, enemy_texture);
 
 	while (state.is_running) {
 		while (SDL_PollEvent(&e) != 0) {
@@ -103,22 +96,8 @@ static Global state;
 			tower->angle++;
 		}
 
-		for (int i = 0; i < enemy_array.size; i++) {
-			Enemy *enemy = get_element(&enemy_array, i);
-			update_enemy(enemy, state.delta_time);
-			render_enemy(&state, enemy);
-		}
-
-		if ((state.last_tick_time / 1000) % 3 == 0 & enemy_spawn_cd <= 0) {
-			Enemy enemy;
-			init_enemy(&enemy, enemy_texture);
-			enemy.route = test_level.route;
-			place_enemy(&enemy, start_pos);
-			add_element(&enemy_array, &enemy);
-			enemy_spawn_cd = 1;
-		}
-
-		enemy_spawn_cd -= state.delta_time;
+		update_wave(&wave, state.delta_time);
+		draw_wave(&wave, &state);
 
 		render_render_texture(&state);
 		SDL_RenderPresent(state.renderer);
