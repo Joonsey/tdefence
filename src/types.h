@@ -23,3 +23,5 @@ Point sub_point(Point a, Point b);
 Point add_point(Point a, Point b);
 Point mul_point(Point a, Point b);
 Point div_point(Point a, Point b);
+double radians_to_degrees(double radians);
+double angle_from_point(Point point);

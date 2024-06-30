@@ -1,6 +1,5 @@
 #pragma once
 #include "level.h"
-#include "enemy.h"
 #include "types.h"
 
 typedef struct wave_t {

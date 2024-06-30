@@ -1,5 +1,6 @@
 #include "types.h"
 #include "mem.h"
+#include "defines.h"
 #include <string.h>
 
 // Function to initialize a dynamic array
@@ -44,7 +45,7 @@ void* get_element(const Darray *arr, int index)
 {
 	if (index >= arr->size | index < 0)
 	{
-		printf("ERROR: index out of bounds\n");
+		PRINT_DEBUG("ERROR: index out of bounds");
 		return arr->array + arr->size * arr->element_size;
 	}
 	return arr->array + index * arr->element_size;
@@ -54,7 +55,7 @@ void* pop_element(Darray *arr, int index)
 {
 	if (index >= arr->size | index < 0)
 	{
-		printf("ERROR: index out of bounds\n");
+		PRINT_DEBUG("ERROR: index out of bounds");
 		return NULL;
 	}
 	void* element = mem_alloc(arr->element_size);

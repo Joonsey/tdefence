@@ -1,4 +1,5 @@
 #include "types.h"
+#include "defines.h"
 #include "stdio.h"
 #include "stdlib.h"
 #include "math.h"
@@ -28,4 +29,13 @@ Point div_point(Point a, Point b) {
 		exit(1);
 	}
 	return (Point){a.x / b.x, a.y / b.y};
+}
+
+double radians_to_degrees(double radians) {
+    return radians * (180.0 / PI);
+}
+
+double angle_from_point(Point point) {
+    double radians = atan2(point.y, point.x); // atan2(y, x) computes the angle in radians
+    return radians_to_degrees(radians);
 }

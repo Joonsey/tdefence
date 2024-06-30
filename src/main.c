@@ -33,17 +33,11 @@ static Global state;
 	Darray tower_array;
 	init_darray(&tower_array, 4, sizeof(Tower));
 
-	for (int i = 0; i < 20; i ++)
-	{
-		Tower tower;
-		init_tower(&tower, cannon_texture);
-		Point point = {.x = 16 * i, .y = 200};
-		tower.angle = i * 10;
-		tower.point = point;
-		add_element(&tower_array, &tower);
-	}
-
-	pop_element(&tower_array, 3);
+	Tower tower;
+	init_tower(&tower, cannon_texture);
+	Point point = {160, 160};
+	tower.point = point;
+	add_element(&tower_array, &tower);
 
 	Level test_level;
 	init_level(&test_level, LEVEL_FIRST);
@@ -92,8 +86,8 @@ static Global state;
 
 		for (int i = 0; i < tower_array.size; i++) {
 			Tower* tower = get_element(&tower_array, i);
+			update_tower(tower, state.delta_time, wave.enemies);
 			render_tower(&state, tower);
-			tower->angle++;
 		}
 
 		update_wave(&wave, state.delta_time);

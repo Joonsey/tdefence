@@ -8,6 +8,7 @@ Enemy* init_enemy(Enemy* enemy, SDL_Texture* base_texture){
 	mem_set(enemy, 0, sizeof(Enemy));
 	enemy->base_texture = base_texture;
 	enemy->speed = 16.0f;
+	enemy->health = 100;
 
 	return enemy;
 }
@@ -27,6 +28,12 @@ void place_enemy(Enemy* enemy, Point position) {
 int update_enemy(Enemy* enemy, float dt) {
 	if (enemy->target_index >= enemy->route.size) {
 		printf("INFO: ENEMY hit end of route\n");
+		return 1;
+	}
+
+	if (enemy->health <= 0)
+	{
+		// enemy has died
 		return 1;
 	}
 

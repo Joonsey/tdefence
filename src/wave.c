@@ -2,6 +2,7 @@
 #include "mem.h"
 #include "state.h"
 #include "sprites.h"
+#include "enemy.h"
 
 #define MAX_WAVE 10
 
@@ -43,7 +44,7 @@ void update_wave(Wave* wave, float dt) {
 			place_enemy(&enemy, *start_pos);
 			add_element(&wave->enemies, &enemy);
 
-			spawn_cooldown = 10;
+			spawn_cooldown = 3;
 			wave->remaining_enemies--;
 		}
 
