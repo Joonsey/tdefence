@@ -109,8 +109,7 @@ static Global state;
 			render_enemy(&state, enemy);
 		}
 
-		if ((state.last_tick_time / 1000) % 3 == 0 &
-				enemy_spawn_cd <= 0) {
+		if ((state.last_tick_time / 1000) % 3 == 0 & enemy_spawn_cd <= 0) {
 			Enemy enemy;
 			init_enemy(&enemy, enemy_texture);
 			enemy.route = test_level.route;

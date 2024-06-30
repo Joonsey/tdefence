@@ -1,7 +1,6 @@
 #include <SDL2/SDL_render.h>
 #include <stdio.h>
 #include <string.h>
-#include <strings.h>
 
 #include "level.h"
 #include "mem.h"
@@ -10,6 +9,16 @@
 
 #define file_buff_size 1000
 
+char *strsep(char **stringp, const char *delim) {
+    char *rv = *stringp;
+    if (rv) {
+        *stringp += strcspn(*stringp, delim);
+        if (**stringp)
+            *(*stringp)++ = '\0';
+        else
+            *stringp = 0; }
+    return rv;
+}
 
 Darray read_file(const char* path) {
 	FILE* file = fopen(path, "r");

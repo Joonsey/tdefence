@@ -2,6 +2,7 @@
 #include "render.h"
 #include "defines.h"
 #include "mem.h"
+#include "math.h"
 
 Enemy* init_enemy(Enemy* enemy, SDL_Texture* base_texture){
 	mem_set(enemy, 0, sizeof(Enemy));
