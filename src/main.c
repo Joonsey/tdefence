@@ -3,6 +3,8 @@
 #include <stdio.h>
 #include <math.h>
 
+#include "defines.h"
+#include "select.h"
 #include "sprites.h"
 #include "tower.h"
 #include "types.h"
@@ -25,6 +27,8 @@ static Global state;
 
 	SDL_Texture* cannon_texture = load_sprite(&state, "assets/sprites/cannon-turret.png");
 	SDL_Texture* enemy_texture = load_sprite(&state, "assets/sprites/basic_enemy.png");
+	SDL_Texture* select_texture = load_sprite(&state, "assets/sprites/select.png");
+	SDL_Texture* tile_set = load_sprite(&state, "assets/map/forestPath_.png");
 
 	state.is_running = 1;
 	SDL_Event e;
@@ -33,19 +37,21 @@ static Global state;
 	Darray tower_array;
 	init_darray(&tower_array, 4, sizeof(Tower));
 
-	Tower tower;
-	init_tower(&tower, cannon_texture);
-	Point point = {160, 160};
-	tower.point = point;
-	add_element(&tower_array, &tower);
-
 	Level test_level;
-	init_level(&test_level, LEVEL_FIRST);
+	init_level(&test_level, LEVEL_FIRST, tile_set);
+
+	Select select;
+	init_select(&select, &state.hovering, select_texture);
 
 	Wave wave;
 	init_wave(&wave, &test_level, enemy_texture);
 
 	while (state.is_running) {
+		int x, y;
+		SDL_GetMouseState(&x, &y);
+		state.hovering.x = floor(x / (SCREEN_WIDTH / RENDER_WIDTH) / 16) * 16;
+		state.hovering.y = floor(y / (SCREEN_HEIGHT / RENDER_HEIGHT) / 16) * 16;
+
 		while (SDL_PollEvent(&e) != 0) {
 			if (e.type == SDL_QUIT) {
 				state.is_running = 0;
@@ -57,8 +63,7 @@ static Global state;
 				if (e.key.keysym.sym == SDLK_a){
 					Tower tower;
 					init_tower(&tower, cannon_texture);
-					tower.point.x  = 16 * (tower_array.size % 20);
-					tower.point.y = 100;
+					tower.point = state.hovering;
 					add_element(&tower_array, &tower);
 				}
 				if (e.key.keysym.sym == SDLK_d){
@@ -67,6 +72,11 @@ static Global state;
 				if (e.key.keysym.sym == SDLK_e){
 					if (draw_path == 0) draw_path = 1;
 					else draw_path = 0;
+				}
+				if (e.key.keysym.sym == SDLK_r){
+					if (wave.remaining_enemies < 0){
+						start_new_wave(&wave);
+					}
 				}
 			}
 		}
@@ -92,6 +102,8 @@ static Global state;
 
 		update_wave(&wave, state.delta_time);
 		draw_wave(&wave, &state);
+
+		render_select(&state, &select);
 
 		render_render_texture(&state);
 		SDL_RenderPresent(state.renderer);

@@ -5,3 +5,4 @@
 #include "state.h"
 
 SDL_Texture* load_sprite(Global *state, char* path);
+SDL_Texture* load_spritesheet(Global *state, char* path);

@@ -70,7 +70,6 @@ void update_wave(Wave* wave, float dt) {
 }
 
 void start_new_wave(Wave* wave) {
-
 	if (wave->remaining_enemies >= 0) {
 		printf("ERROR: tried starting new wave while there are remaining enemies\n");
 		return;

@@ -3,6 +3,7 @@
 #include <string.h>
 
 #include "level.h"
+#include "render.h"
 #include "mem.h"
 #include "types.h"
 #include "defines.h"
@@ -164,12 +165,13 @@ Darray determine_route(Level* level) {
 	return route_array;
 };
 
-Level* init_level(Level* level, level_type type) {
+Level* init_level(Level* level, level_type type, SDL_Texture* tile_set) {
 	// ignore type for now
 	mem_set(level, 0, sizeof(*level));
 	level->type = type;
 
 	level->tiles = read_file("assets/map/level1.csv");
+	level->tilesheet = tile_set;
 
 	level->route = determine_route(level);
 
@@ -204,13 +206,8 @@ void render_level(Global* state, Level* level) {
 		Darray *int_array = get_element(&level->tiles, y);
 		for (int x = 0; x < int_array->size ; x ++) {
 			int value = *(int*)get_element(int_array, x);
-			if (value == 28) {
-				const SDL_Rect rect = {x * 16, y * 16, 16, 16};
-				SDL_SetRenderDrawColor(state->renderer, 255,0,0,255);
-				SDL_RenderFillRect(state->renderer, &rect);
-				SDL_RenderDrawRect(state->renderer, &rect);
-				SDL_SetRenderDrawColor(state->renderer, 0,0,0,255);
-			}
+			Point point = {x * 16, y * 16};
+			render_sprite_sheet(level->tilesheet, state->renderer, point, value);
 		}
 	}
 }

@@ -13,3 +13,4 @@ typedef struct wave_t {
 Wave* init_wave(Wave* wave, Level* level, SDL_Texture* enemy_texture);
 void update_wave(Wave* wave, float dt);
 void draw_wave(Wave* wave, Global *state);
+void start_new_wave(Wave* wave);

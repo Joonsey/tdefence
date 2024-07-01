@@ -2,6 +2,7 @@
 #include <SDL2/SDL.h>
 #include <SDL2/SDL_image.h>
 #include <stdio.h>
+#include "types.h"
 
 typedef struct Global {
 	SDL_Window* window;
@@ -10,6 +11,7 @@ typedef struct Global {
 	int is_running;
 	float delta_time;
 	uint32_t last_tick_time;
+	Point hovering;
 } Global;
 
 int init_global_state(Global* global);
