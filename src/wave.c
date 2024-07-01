@@ -21,8 +21,8 @@ static int wave_config[MAX_WAVE] = {
 	35
 };
 
-Wave* init_wave(Wave* wave, Level* level, SDL_Texture* enemy_texture) {
-	mem_set(wave, sizeof(Wave), 0);
+Enemy_wave* init_wave(Enemy_wave* wave, Level* level, Texture enemy_texture) {
+	mem_set(wave, sizeof(Enemy_wave), 0);
 
 	wave->level = level;
 	wave->base_enemy_texture = enemy_texture;
@@ -32,13 +32,13 @@ Wave* init_wave(Wave* wave, Level* level, SDL_Texture* enemy_texture) {
 	return wave;
 }
 
-void update_wave(Wave* wave, float dt) {
+void update_wave(Enemy_wave* wave, float dt) {
 	Darray cleanup_array;
 	init_darray(&cleanup_array, 20, sizeof(int));
 
 	if (wave->remaining_enemies >= 0) {
 		if (spawn_cooldown <= 0) {
-			Point* start_pos = get_element(&wave->level->route, 0);
+			Vector2* start_pos = get_element(&wave->level->route, 0);
 			Enemy enemy;
 			init_enemy(&enemy, wave->base_enemy_texture);
 			enemy.route = wave->level->route;
@@ -70,7 +70,7 @@ void update_wave(Wave* wave, float dt) {
 	free_darray(&cleanup_array);
 }
 
-void start_new_wave(Wave* wave) {
+void start_new_wave(Enemy_wave* wave) {
 	if (wave->remaining_enemies >= 0) {
 		printf("ERROR: tried starting new wave while there are remaining enemies\n");
 		return;
@@ -80,10 +80,10 @@ void start_new_wave(Wave* wave) {
 	wave->remaining_enemies = wave_config[wave->wave_count];
 }
 
-void draw_wave(Wave* wave, Global *state) {
+void draw_wave(Enemy_wave* wave, Global *state) {
 	for (int i = 0; i < wave->enemies.size; i++) {
 		Enemy *enemy = get_element(&wave->enemies, i);
-		Point position = enemy->position;
+		Vector2 position = enemy->position;
 		position.x += 8;
 		position.y += 14;
 		render_shadow(state, position, 4, 3);

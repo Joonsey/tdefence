@@ -1,5 +1,4 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+#include <raylib.h>
 #include <stdio.h>
 #include <math.h>
 
@@ -15,23 +14,17 @@
 
 static Global state;
 
-#ifdef _WIN32
-#include <windows.h>
-    int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int nCmdShow) {
-#else
     int main(int argc, char *argv[]) {
-#endif
 	if (init_global_state(&state) != 0) {
 		printf("Error initializing\n");
 	}
 
-	SDL_Texture* cannon_texture = load_sprite(&state, "assets/sprites/cannon-turret.png");
-	SDL_Texture* enemy_texture = load_sprite(&state, "assets/sprites/basic_enemy.png");
-	SDL_Texture* select_texture = load_sprite(&state, "assets/sprites/select.png");
-	SDL_Texture* tile_set = load_sprite(&state, "assets/map/forestPath_.png");
+	Texture2D cannon_texture = load_sprite("assets/sprites/cannon-turret.png");
+	Texture2D enemy_texture = load_sprite("assets/sprites/basic_enemy.png");
+	Texture2D select_texture = load_sprite("assets/sprites/select.png");
+	Texture2D tile_set = load_sprite("assets/map/forestPath_.png");
 
 	state.is_running = 1;
-	SDL_Event e;
 	int draw_path = 0;
 
 	Darray tower_array;
@@ -43,56 +36,15 @@ static Global state;
 	Select select;
 	init_select(&select, &state.hovering, select_texture);
 
-	Wave wave;
+	Enemy_wave wave;
 	init_wave(&wave, &test_level, enemy_texture);
 
-	while (state.is_running) {
-		int x, y;
-		SDL_GetMouseState(&x, &y);
-		state.hovering.x = floor(x / (SCREEN_WIDTH / RENDER_WIDTH) / 16) * 16;
-		state.hovering.y = floor(y / (SCREEN_HEIGHT / RENDER_HEIGHT) / 16) * 16;
+	SetTargetFPS(60);
 
-		while (SDL_PollEvent(&e) != 0) {
-			if (e.type == SDL_QUIT) {
-				state.is_running = 0;
-			}
-			else if(e.type == SDL_KEYUP) {
-				if (e.key.keysym.sym == SDLK_q){
-					state.is_running = 0;
-				}
-				if (e.key.keysym.sym == SDLK_a){
-					Tower tower;
-					init_tower(&tower, cannon_texture);
-					tower.point = state.hovering;
-					add_element(&tower_array, &tower);
-				}
-				if (e.key.keysym.sym == SDLK_d){
-					Tower* tower = pop_element(&tower_array, tower_array.size - 1);
-				}
-				if (e.key.keysym.sym == SDLK_e){
-					if (draw_path == 0) draw_path = 1;
-					else draw_path = 0;
-				}
-				if (e.key.keysym.sym == SDLK_r){
-					if (wave.remaining_enemies < 0){
-						start_new_wave(&wave);
-					}
-				}
-			}
-		}
-		uint32_t tick_time = SDL_GetTicks();
-		state.delta_time = (tick_time - state.last_tick_time);
-		state.delta_time /= 100;
-		state.last_tick_time = tick_time;
-
+	while (!WindowShouldClose()) {
 		prepare_render(&state);
 
-		if (draw_path == 0){
-			render_level(&state, &test_level);
-		}
-		else{
-			render_route(&state, &test_level);
-		}
+		render_level(&state, &test_level);
 
 		for (int i = 0; i < tower_array.size; i++) {
 			Tower* tower = get_element(&tower_array, i);
@@ -106,12 +58,9 @@ static Global state;
 		render_select(&state, &select);
 
 		render_render_texture(&state);
-		SDL_RenderPresent(state.renderer);
-		SDL_Delay(16);
 	}
 
 	cleanup_state(&state);
-	SDL_Quit();
 
 	return 0;
 }

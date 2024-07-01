@@ -1,17 +1,15 @@
 #pragma once
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
+
+#include <raylib.h>
 #include <stdio.h>
 #include "types.h"
 
 typedef struct Global {
-	SDL_Window* window;
-	SDL_Renderer* renderer;
-	SDL_Texture* render_target;
 	int is_running;
 	float delta_time;
-	uint32_t last_tick_time;
-	Point hovering;
+	RenderTexture render_texture;
+	unsigned long long last_tick_time;
+	Vector2 hovering;
 } Global;
 
 int init_global_state(Global* global);

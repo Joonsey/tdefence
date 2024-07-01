@@ -1,10 +1,12 @@
+#include <raylib.h>
+#include <raymath.h>
 #include "enemy.h"
 #include "render.h"
 #include "defines.h"
 #include "mem.h"
 #include "math.h"
 
-Enemy* init_enemy(Enemy* enemy, SDL_Texture* base_texture){
+Enemy* init_enemy(Enemy* enemy, Texture2D base_texture){
 	mem_set(enemy, 0, sizeof(Enemy));
 	enemy->base_texture = base_texture;
 	enemy->speed = 16.0f;
@@ -15,13 +17,12 @@ Enemy* init_enemy(Enemy* enemy, SDL_Texture* base_texture){
 void render_enemy(Global *state, Enemy* enemy) {
 	render_sprite_stack(
 			enemy->base_texture,
-			state->renderer,
 			enemy->position,
 			enemy->angle,
 			TILE_SIZE);
 }
 
-void place_enemy(Enemy* enemy, Point position) {
+void place_enemy(Enemy* enemy, Vector2 position) {
 	enemy->position = position;
 }
 
@@ -37,8 +38,8 @@ int update_enemy(Enemy* enemy, float dt) {
 		return 1;
 	}
 
-	Point target = *(Point*)get_element(&enemy->route, enemy->target_index);
-	Point delta = sub_point(target, enemy->position);
+	Vector2 target = *(Vector2*)get_element(&enemy->route, enemy->target_index);
+	Vector2 delta = Vector2Subtract(target, enemy->position);
 	float distance = sqrt(delta.x * delta.x + delta.y * delta.y);
 
 	enemy->angle++;
@@ -49,7 +50,7 @@ int update_enemy(Enemy* enemy, float dt) {
 		enemy->target_index++;
 	}
 	else {
-		enemy->position = add_point(enemy->position, mul_point((Point){velocity, velocity}, div_point(delta, (Point){distance, distance})));
+		enemy->position = Vector2Add(enemy->position, Vector2Multiply((Vector2){velocity, velocity}, Vector2Divide(delta, (Vector2){distance, distance})));
 	}
 
 	return 0;

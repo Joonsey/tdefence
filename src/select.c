@@ -2,7 +2,7 @@
 #include "mem.h"
 #include "render.h"
 
-Select* init_select(Select* select, Point* point, SDL_Texture* texture) {
+Select* init_select(Select* select, Vector2* point, Texture2D texture) {
 	mem_set(select, sizeof(Select), 0);
 
 	select->point = point;
@@ -12,5 +12,5 @@ Select* init_select(Select* select, Point* point, SDL_Texture* texture) {
 }
 
 void render_select(Global *state, Select* select) {
-	render_sprite_stack(select->texture, state->renderer, *select->point, 0, 16);
+	render_sprite_stack(select->texture, *select->point, 0, 16);
 }
