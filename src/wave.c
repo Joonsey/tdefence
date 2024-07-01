@@ -3,6 +3,7 @@
 #include "state.h"
 #include "sprites.h"
 #include "enemy.h"
+#include "render.h"
 
 #define MAX_WAVE 10
 
@@ -80,6 +81,14 @@ void start_new_wave(Wave* wave) {
 }
 
 void draw_wave(Wave* wave, Global *state) {
+	for (int i = 0; i < wave->enemies.size; i++) {
+		Enemy *enemy = get_element(&wave->enemies, i);
+		Point position = enemy->position;
+		position.x += 8;
+		position.y += 14;
+		render_shadow(state, position, 4, 3);
+	}
+
 	for (int i = 0; i < wave->enemies.size; i++) {
 		Enemy *enemy = get_element(&wave->enemies, i);
 		render_enemy(state, enemy);

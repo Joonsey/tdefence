@@ -15,7 +15,7 @@ jobs:
 
     - name: Install deps
       run: |
-        sudo apt-get install libsdl2-image-dev libsdl2-dev clang
+        sudo apt-get install libsdl2-image-dev libsdl2-dev libsdl2-gfx-dev clang
     - name: Compile
       run: |
         ./build.sh
@@ -46,6 +46,10 @@ jobs:
         wget https://www.libsdl.org/projects/SDL_image/release/SDL2_image-devel-2.8.2-VC.zip -O sdl2/SDL2_image.zip
         unzip sdl2/SDL2_image.zip -d sdl2
         cp -r sdl2/SDL2_image-2.8.2/lib/x64/* sdl2
+
+        wget https://netix.dl.sourceforge.net/project/sdl2gfx/SDL2_gfx-1.0.1.zip?viasf=1 -O sdl2/SDL2_gfx.zip
+        unzip sdl2/SDL2_gfx.zip -d sdl2
+        cp -r sdl2/SDL2_gfx-1.0.1/lib/x64/* sdl2
     - name: Create archive
       run: |
         mkdir build

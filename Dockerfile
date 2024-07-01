@@ -11,6 +11,9 @@ RUN apt-get update && \
 	mingw-w64 \
     wget \
     tar \
+	libsdl2-image-dev \
+	libsdl2-dev \
+	libsdl2-gfx-dev \
     build-essential \
     && rm -rf /var/lib/apt/lists/*
 
@@ -41,7 +44,8 @@ RUN x86_64-w64-mingw32-gcc -o /build/main.exe *.c -lm \
 	-lwinmm -lpthread -lws2_32\
 	-lmingw32 \
     -lSDL2 \
-    -lSDL2_image
+    -lSDL2_image \
+    -lSDL2_gfx
 
 run ls /build
 

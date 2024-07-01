@@ -1,4 +1,7 @@
+#include <SDL2/SDL2_gfxPrimitives.h>
+
 #include "render.h"
+#include "state.h"
 #include "defines.h"
 
 void render_texture(SDL_Texture* texture, SDL_Renderer* renderer, SDL_Rect* src_rect, Point point, double angle) {
@@ -38,4 +41,8 @@ void render_sprite_sheet(SDL_Texture* texture, SDL_Renderer* renderer, Point poi
 
 	SDL_Rect src_rect = {x * TILE_SIZE, y * TILE_SIZE, TILE_SIZE, TILE_SIZE};
     render_texture(texture, renderer, &src_rect, point, 0);
+}
+
+void render_shadow(Global *state, Point position, int rx, int ry) {
+	filledEllipseRGBA(state->renderer, position.x, position.y, rx, ry, 0, 0, 0, 70);
 }
