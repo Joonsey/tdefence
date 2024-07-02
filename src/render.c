@@ -6,11 +6,14 @@
 #include "defines.h"
 
 void render_texture(Texture2D texture, Rectangle src_rect, Vector2 point, double angle) {
+
 	Rectangle dest_rect = src_rect;
-	dest_rect.x = point.x;
-	dest_rect.y = point.y;
 
 	Vector2 origin = {dest_rect.width / 2, dest_rect.height / 2};
+
+	dest_rect.x = point.x + origin.x;
+	dest_rect.y = point.y + origin.y;
+
     DrawTexturePro(texture, src_rect, dest_rect, origin, angle, WHITE);
 }
 
