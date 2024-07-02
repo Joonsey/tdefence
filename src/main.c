@@ -42,7 +42,20 @@ static Global state;
 	SetTargetFPS(60);
 
 	while (!WindowShouldClose()) {
+		state.delta_time = GetFrameTime();
 		prepare_render(&state);
+
+		int mouse_x = GetMouseX();
+		int mouse_y = GetMouseY();
+
+		float width_ratio = SCREEN_WIDTH / RENDER_WIDTH;
+		float height_ratio = SCREEN_HEIGHT / RENDER_HEIGHT;
+		mouse_x = mouse_x / width_ratio;
+		mouse_y = mouse_y / height_ratio;
+
+		mouse_x = floor(mouse_x / 16) * 16;
+		mouse_y = floor(mouse_y / 16) * 16;
+		state.hovering = (Vector2){mouse_x, mouse_y};
 
 		render_level(&state, &test_level);
 

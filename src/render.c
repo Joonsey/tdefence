@@ -9,7 +9,9 @@ void render_texture(Texture2D texture, Rectangle src_rect, Vector2 point, double
 	Rectangle dest_rect = src_rect;
 	dest_rect.x = point.x;
 	dest_rect.y = point.y;
-    DrawTexturePro(texture, src_rect, dest_rect, Vector2Zero(), angle, WHITE);
+
+	Vector2 origin = {dest_rect.width / 2, dest_rect.height / 2};
+    DrawTexturePro(texture, src_rect, dest_rect, origin, angle, WHITE);
 }
 
 void render_sprite_stack(Texture2D texture, Vector2 point, double angle, int sprite_height) {
