@@ -11,6 +11,7 @@
 #include "level.h"
 #include "enemy.h"
 #include "wave.h"
+#include "render.h"
 
 static Global state;
 
@@ -23,6 +24,8 @@ static Global state;
 	Texture2D enemy_texture = load_sprite("assets/sprites/basic_enemy.png");
 	Texture2D select_texture = load_sprite("assets/sprites/select.png");
 	Texture2D tile_set = load_sprite("assets/map/forestPath_.png");
+
+	init_render();
 
 	state.is_running = 1;
 	int draw_path = 0;

@@ -15,11 +15,15 @@ Enemy* init_enemy(Enemy* enemy, Texture2D base_texture){
 	return enemy;
 }
 void render_enemy(Global *state, Enemy* enemy) {
-	render_sprite_stack(
+	float outline_color[4] = { 0.f, 0.f, 0.f, 1.f };
+	render_sprite_stack_with_outline(
 			enemy->base_texture,
 			enemy->position,
 			enemy->angle,
-			TILE_SIZE);
+			TILE_SIZE,
+			outline_color,
+			1.f
+			);
 }
 
 void place_enemy(Enemy* enemy, Vector2 position) {

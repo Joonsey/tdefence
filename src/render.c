@@ -5,6 +5,12 @@
 #include "state.h"
 #include "defines.h"
 
+static Shader outline_shader;
+
+void init_render() {
+	outline_shader = LoadShader(0, "assets/shaders/outline.fs");
+}
+
 void render_texture(Texture2D texture, Rectangle src_rect, Vector2 point, double angle) {
 
 	Rectangle dest_rect = src_rect;
@@ -48,4 +54,32 @@ void render_sprite_sheet(Texture2D texture, Vector2 point, int index) {
 
 void render_shadow(Global *state, Vector2 position, int rx, int ry) {
 	return;
+}
+
+void render_sprite_stack_with_outline(Texture2D texture, Vector2 point, double angle, int sprite_height, float outline_color[4], float outline_size) {
+	render_outline(texture, outline_color, outline_size);
+	BeginShaderMode(outline_shader);
+	render_sprite_stack(texture, point, angle, sprite_height);
+	EndShaderMode();
+	render_sprite_stack(texture, point, angle, sprite_height);
+}
+
+void render_outline(Texture2D texture, float outline_color[4], float outline_size) {
+    Vector2 resolution = { (float)texture.width, (float)texture.height };
+    float texture_size[2] = { (float)texture.width, (float)texture.height };
+
+    int outline_size_loc = GetShaderLocation(outline_shader, "outlineSize");
+    int outline_color_loc = GetShaderLocation(outline_shader, "outlineColor");
+    int texture_size_loc = GetShaderLocation(outline_shader, "textureSize");
+
+    // Set shader values (they can be changed later)
+    SetShaderValue(outline_shader, outline_size_loc, &outline_size, SHADER_UNIFORM_FLOAT);
+    SetShaderValue(outline_shader, outline_color_loc, outline_color, SHADER_UNIFORM_VEC4);
+    SetShaderValue(outline_shader, texture_size_loc, texture_size, SHADER_UNIFORM_VEC2);
+
+
+}
+
+void render_cleanup() {
+	UnloadShader(outline_shader);
 }
